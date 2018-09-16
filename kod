@@ -1,0 +1,126 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <vector>
+#include <windows.h>
+
+using namespace std;
+
+class Postac
+{
+public:
+
+    string rasa;
+    string nazwa_postaci;
+
+    void wczytaj()
+    {
+        cout<<"Witamy w kreatorze postaci!"<<endl;
+        cout<<"1.Stworz nowego bohatera"<<endl;
+        cout<<"2.Wczytaj postac"<<endl;
+        int wybor;
+        cin>>wybor;
+        system("cls");
+        cout<<"Wybierz postac:"<<endl;
+        if (wybor==2)
+        {
+            fstream plik;
+            string linia;
+            int ile=1;
+            int i=1;
+            int nr_postaci=1;
+            plik.open("postacie.txt", ios::in);
+            while(!plik.eof())
+            {
+                getline(plik,linia);
+                if(i==ile)
+                {
+                  cout<<nr_postaci<<". "<<linia<<endl;
+                  nr_postaci++;
+                }
+                ile+=2;
+                i++;
+            }
+        }
+        int wybor2;
+        cin>>wybor2;
+
+    }
+
+    void wybierzRase()
+    {
+        fstream plik;
+        vector <int> tab;
+        vector <string> rass;
+        plik.open("rasy.txt",ios::in);
+        if(!plik.good())
+        {
+                cout<<"Nie udalo sie otworzyc pliku";
+                exit(0);
+        }
+
+        cout<<"  WYBIERZ RASE: "<<endl;
+        cout<<"------------------------"<<endl;
+
+        while(!plik.eof())
+        {
+                int liczba;
+                string linia,rasa2;
+                plik>>liczba>>rasa2;
+                tab.push_back (liczba);
+                rass.push_back (rasa2);
+                getline(plik,linia);
+                cout<<linia<<endl;
+        }
+
+        int wybor;
+        cin>>wybor;
+        rasa=rass[wybor-1];
+        cout<<"Wybrales rase: "<<rasa<<endl;
+        Sleep(2000);
+
+        plik.close();
+        system("cls");
+    }
+
+    void nazwij()
+    {
+        cout<<"Podaj nazwe swojego bohatera: ";
+        cin>>nazwa_postaci;
+        system("cls");
+    }
+    void pokazPostac()
+    {
+        cout<<"  INTERFEJS POSTACI"<<endl;
+        cout<<"----------------------"<<endl;
+        cout<<"Nazwa bohatera: "<<nazwa_postaci<<endl;
+        cout<<"Rasa: "<<rasa<<endl;
+        getchar();getchar();
+    }
+    void zapiszPostac()
+    {
+        cout<<endl<<"Czy chcesz zapisac swoja postac?"<<endl;
+        cout<<"1.Tak"<<endl;
+        cout<<"2.Nie"<<endl;
+        int decyzja;
+        cin>>decyzja;
+        if(decyzja==2)
+            exit(0);
+        fstream plik;
+        plik.open("postacie.txt", ios::out | ios::app);
+        plik<<nazwa_postaci<<endl;
+        plik<<rasa<<endl;
+    }
+
+};
+
+int main()
+{
+    Postac p1;
+    p1.wczytaj();
+    p1.wybierzRase();
+    p1.nazwij();
+    p1.pokazPostac();
+    p1.zapiszPostac();
+    return 0;
+}

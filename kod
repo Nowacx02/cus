@@ -13,7 +13,7 @@ public:
     string rasa;
     string nazwa_postaci;
 
-    void wczytaj()
+   bool wczytaj()
     {
         cout<<"Witamy w kreatorze postaci!"<<endl;
         cout<<"1.Stworz nowego bohatera"<<endl;
@@ -21,9 +21,9 @@ public:
         int wybor;
         cin>>wybor;
         system("cls");
-        cout<<"Wybierz postac:"<<endl;
         if (wybor==2)
         {
+            cout<<"Wybierz postac:"<<endl;
             fstream plik;
             string linia;
             int ile=1;
@@ -37,15 +37,38 @@ public:
                 {
                   cout<<nr_postaci<<". "<<linia<<endl;
                   nr_postaci++;
+                  ile+=2;
                 }
-                ile+=2;
                 i++;
             }
-        }
-        int wybor2;
-        cin>>wybor2;
+            plik.close();
+
+            int wybor2;
+            cin>>wybor2;
+
+            plik.open("postacie.txt", ios::in);
+            int a=1;
+            int b=0;
+            while(!plik.eof())
+            {
+                getline(plik,linia);
+                if(a==(wybor2*2-1)||(a==wybor2*2))
+                {
+                switch(b)
+                {
+                    case 0: nazwa_postaci=linia;    break;
+                    case 1: rasa=linia;             break;
+                }
+                b++;
+                }
+                a++;
+            }
+
+            return true;
 
     }
+    return false;
+}
 
     void wybierzRase()
     {
@@ -74,7 +97,15 @@ public:
         }
 
         int wybor;
-        cin>>wybor;
+
+        while(!(cin>>wybor)||(wybor<1||wybor>8))
+        {
+          cout<<"Podales nieprawidlowy numer! Sprobuj jeszcze raz: "<<endl;
+          cin.clear();
+          cin.sync();
+        }
+
+
         rasa=rass[wybor-1];
         cout<<"Wybrales rase: "<<rasa<<endl;
         Sleep(2000);
@@ -95,6 +126,7 @@ public:
         cout<<"----------------------"<<endl;
         cout<<"Nazwa bohatera: "<<nazwa_postaci<<endl;
         cout<<"Rasa: "<<rasa<<endl;
+
         getchar();getchar();
     }
     void zapiszPostac()
@@ -103,7 +135,12 @@ public:
         cout<<"1.Tak"<<endl;
         cout<<"2.Nie"<<endl;
         int decyzja;
-        cin>>decyzja;
+        while(!(cin>>decyzja)||(decyzja<1||decyzja>2))
+        {
+          cout<<"Podales nieprawidlowy numer! Sprobuj jeszcze raz: "<<endl;
+          cin.clear();
+          cin.sync();
+        }
         if(decyzja==2)
             exit(0);
         fstream plik;
@@ -117,10 +154,13 @@ public:
 int main()
 {
     Postac p1;
-    p1.wczytaj();
+    if(p1.wczytaj()==false)
+    {
     p1.wybierzRase();
     p1.nazwij();
     p1.pokazPostac();
     p1.zapiszPostac();
+    }
+    p1.pokazPostac();
     return 0;
 }

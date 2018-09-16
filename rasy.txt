@@ -1,0 +1,8 @@
+1 Ork 1.Ork
+2 Goblin 2.Goblin
+3 Demon 3.Demon
+4 Mroczny_Elf 4.Mroczny Elf
+5 Ent 5.Ent
+6 Human 6.Human
+7 Elf_lesny 7.Elf lesny
+8 Troll 8.Troll
